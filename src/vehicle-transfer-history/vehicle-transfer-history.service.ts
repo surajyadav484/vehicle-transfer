@@ -44,22 +44,15 @@ export class VehicleTransferHistoryService {
     );
   }
 
-  findAll() {
-    return `This action returns all vehicleTransferHistory`;
+  async getAll() {
+    return this.vehicleTransferHistoryRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} vehicleTransferHistory`;
-  }
-
-  update(
-    id: number,
-    updateVehicleTransferHistoryDto: UpdateVehicleTransferHistoryDto,
-  ) {
-    return `This action updates a #${id} vehicleTransferHistory`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} vehicleTransferHistory`;
+  async getOne(id: string): Promise<VehicleTransferHistory> {
+    const found = await this.vehicleTransferHistoryRepository.findOneBy({ id });
+    if (!found) {
+      throw new BadRequestException(`Transfer with given id ${id} not found!`);
+    }
+    return found;
   }
 }

@@ -1,14 +1,5 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateVehicleTransferHistoryInputDto } from './dto/create-vehicle-transfer-history-input.dto copy';
-import { UpdateVehicleTransferHistoryDto } from './dto/update-vehicle-transfer-history.dto';
 import { VehicleTransferHistoryService } from './vehicle-transfer-history.service';
 
 @Controller('vehicle-transfer-history')
@@ -28,28 +19,12 @@ export class VehicleTransferHistoryController {
   }
 
   @Get()
-  findAll() {
-    return this.vehicleTransferHistoryService.findAll();
+  getAll() {
+    return this.vehicleTransferHistoryService.getAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.vehicleTransferHistoryService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateVehicleTransferHistoryDto: UpdateVehicleTransferHistoryDto,
-  ) {
-    return this.vehicleTransferHistoryService.update(
-      +id,
-      updateVehicleTransferHistoryDto,
-    );
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.vehicleTransferHistoryService.remove(+id);
+  getOne(@Param('id') id: string) {
+    return this.vehicleTransferHistoryService.getOne(id);
   }
 }
