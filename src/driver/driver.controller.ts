@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { DriverService } from './driver.service';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
+import { LoginDriverDto } from './dto/login-driver.dto';
 
 @Controller('driver')
 export class DriverController {
@@ -10,6 +19,11 @@ export class DriverController {
   @Post()
   create(@Body() createDriverDto: CreateDriverDto) {
     return this.driverService.create(createDriverDto);
+  }
+
+  @Post('login')
+  login(@Body() loginDriverDto: LoginDriverDto) {
+    return this.driverService.login(loginDriverDto);
   }
 
   @Get()
