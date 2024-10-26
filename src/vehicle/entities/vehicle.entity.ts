@@ -7,6 +7,7 @@ export class Vehicle extends BaseEntity {
 
   @Column({
     nullable: false,
+    unique: true,
   })
   vehicleNumber: string;
 
