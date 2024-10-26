@@ -3,9 +3,13 @@ import { VehicleTransferHistoryService } from './vehicle-transfer-history.servic
 import { VehicleTransferHistoryController } from './vehicle-transfer-history.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { VehicleTransferHistory } from './entities/vehicle-transfer-history.entity';
+import { Vehicle } from 'src/vehicle/entities/vehicle.entity';
+import { Driver } from 'src/driver/entities/driver.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([VehicleTransferHistory])],
+  imports: [
+    TypeOrmModule.forFeature([VehicleTransferHistory, Vehicle, Driver]),
+  ],
   controllers: [VehicleTransferHistoryController],
   providers: [VehicleTransferHistoryService],
 })

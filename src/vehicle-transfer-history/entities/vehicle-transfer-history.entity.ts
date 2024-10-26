@@ -1,5 +1,6 @@
 import { Vehicle } from 'src/vehicle/entities/vehicle.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { TransferType } from '../transfer-type.enum';
 
 @Entity()
 export class VehicleTransferHistory {
@@ -9,17 +10,22 @@ export class VehicleTransferHistory {
   @Column({ nullable: false })
   vehicleId: string;
 
-  @Column()
+  @Column({ nullable: true })
   transferredFromId: string;
 
   @Column({ nullable: false })
   transferredToId: string;
 
-  @Column()
-  transferredFromType: string; //It can be driver or any other entity which vehicle can be transferred from.
+  @Column({
+    // type: 'enum',
+    nullable: false,
+    enum: TransferType,
+    default: TransferType.UNASSIGNED,
+  })
+  transferredFromType: TransferType; //It can be driver or any other entity which vehicle can be transferred from.
 
-  @Column({ nullable: false })
-  transferredToType: string; //It can be driver or any other entity which vehicle can be transferred from.
+  @Column({ nullable: false, enum: TransferType })
+  transferredToType: TransferType; //It can be driver or any other entity which vehicle can be transferred from.
 
   @Column({
     nullable: false,

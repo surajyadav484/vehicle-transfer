@@ -1,21 +1,52 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateVehicleTransferHistoryDto } from './dto/create-vehicle-transfer-history.dto';
-import { UpdateVehicleTransferHistoryDto } from './dto/update-vehicle-transfer-history.dto';
-import { Repository } from 'typeorm';
-import { VehicleTransferHistory } from './entities/vehicle-transfer-history.entity';
-import { CreateVehicleTransferHistoryInputDto } from './dto/create-vehicle-transfer-history-input.dto copy';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateVehicleTransferHistoryInputDto } from './dto/create-vehicle-transfer-history-input.dto copy';
+import { CreateVehicleTransferHistoryDto } from './dto/create-vehicle-transfer-history.dto';
+import { VehicleTransferHistory } from './entities/vehicle-transfer-history.entity';
+import { Vehicle } from 'src/vehicle/entities/vehicle.entity';
+import { Driver } from 'src/driver/entities/driver.entity';
+import { TransferType } from './transfer-type.enum';
 
 @Injectable()
 export class VehicleTransferHistoryService {
   constructor(
     @InjectRepository(VehicleTransferHistory)
     private readonly vehicleTransferHistoryRepository: Repository<VehicleTransferHistory>,
+
+    @InjectRepository(Vehicle)
+    private readonly vehicleRepository: Repository<Vehicle>,
+
+    @InjectRepository(Driver)
+    public readonly driverRepository: Repository<Driver>,
   ) {}
 
   async create(
     createVehicleTransferHistoryInputDto: CreateVehicleTransferHistoryInputDto,
   ): Promise<VehicleTransferHistory> {
+    // Check if vehicle to be transferred exists
+    const vehicle = await this.vehicleRepository.findOneBy({
+      id: createVehicleTransferHistoryInputDto.vehicleId,
+    });
+
+    if (!vehicle) {
+      throw new BadRequestException('Vehicle not found');
+    }
+
+    const { transferredToType, transferredToId } =
+      createVehicleTransferHistoryInputDto;
+
+    if (transferredToType === TransferType.DRIVER) {
+      const driver = await this.driverRepository.findOneBy({
+        id: transferredToId,
+      });
+      if (!driver) {
+        throw new BadRequestException(
+          `Driver with id: ${transferredToId} not found`,
+        );
+      }
+    }
+
     let createVehicleTransferHistoryDto: CreateVehicleTransferHistoryDto;
 
     // Get existing vehicle transfer history
@@ -25,8 +56,9 @@ export class VehicleTransferHistoryService {
       });
 
     if (
+      vehicleHistory &&
       vehicleHistory.transferredToId ===
-      createVehicleTransferHistoryInputDto.transferredToId
+        createVehicleTransferHistoryInputDto.transferredToId
     ) {
       throw new BadRequestException(
         `Vehicle has already been transferred to provided ${createVehicleTransferHistoryInputDto.transferredToType}`,
@@ -35,8 +67,8 @@ export class VehicleTransferHistoryService {
 
     createVehicleTransferHistoryDto = {
       ...createVehicleTransferHistoryInputDto,
-      transferredFromId: vehicleHistory?.transferredToId || '',
-      transferredFromType: vehicleHistory?.transferredToType || '',
+      transferredFromId: vehicleHistory?.transferredToId,
+      transferredFromType: vehicleHistory?.transferredToType,
     };
 
     return this.vehicleTransferHistoryRepository.save(
