@@ -1,11 +1,28 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
+import { Repository } from 'typeorm';
+import { Driver } from './entities/driver.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class DriverService {
-  create(createDriverDto: CreateDriverDto) {
-    return 'This action adds a new driver';
+  constructor(
+    @InjectRepository(Driver)
+    private readonly driverRepository: Repository<Driver>,
+  ) {}
+
+  async create(createDriverDto: CreateDriverDto): Promise<Driver> {
+    const { phoneNumber } = createDriverDto;
+    const existingDriver = await this.driverRepository.findOneBy({
+      phoneNumber,
+    });
+    if (existingDriver) {
+      throw new BadRequestException(
+        'Mobile number has already been registered. Please try to login',
+      );
+    }
+    return this.driverRepository.save(createDriverDto);
   }
 
   findAll() {

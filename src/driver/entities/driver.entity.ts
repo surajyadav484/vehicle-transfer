@@ -12,9 +12,10 @@ export class Driver extends BaseEntity {
 
   @Column({
     nullable: false,
+    unique: true,
   })
   phoneNumber: string;
 
   @Column()
-  profilePhotUrl: string;
+  profilePhotoUrl: string;
 }
