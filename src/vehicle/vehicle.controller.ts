@@ -14,4 +14,9 @@ export class VehicleController {
   getOne(@Param('id') id: string) {
     return this.vehicleService.getOne(id);
   }
+
+  @Get()
+  getAll() {
+    return this.vehicleService.getAll();
+  }
 }

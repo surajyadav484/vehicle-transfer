@@ -37,4 +37,9 @@ export class VehicleService {
     }
     return found;
   }
+
+  async getAll(): Promise<Vehicle[]> {
+    const found = await this.vehicleRepository.find();
+    return found;
+  }
 }
