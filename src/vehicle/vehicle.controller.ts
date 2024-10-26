@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { VehicleService } from './vehicle.service';
 
@@ -9,5 +9,9 @@ export class VehicleController {
   @Post()
   create(@Body() createVehicleDto: CreateVehicleDto) {
     return this.vehicleService.create(createVehicleDto);
+  }
+  @Get(':id')
+  getOne(@Param('id') id: string) {
+    return this.vehicleService.getOne(id);
   }
 }
