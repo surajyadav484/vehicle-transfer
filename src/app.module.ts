@@ -5,6 +5,10 @@ import { typeOrmDbConfig } from './config/typeorm.config';
 import { DriverModule } from './driver/driver.module';
 
 @Module({
-  imports: [VehicleModule, TypeOrmModule.forRoot(typeOrmDbConfig), DriverModule],
+  imports: [
+    VehicleModule,
+    DriverModule,
+    TypeOrmModule.forRoot(typeOrmDbConfig),
+  ],
 })
 export class AppModule {}
