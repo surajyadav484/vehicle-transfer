@@ -42,19 +42,25 @@ export class DriverService {
     return 'Logged in successfully';
   }
 
-  findAll() {
-    return `This action returns all driver`;
+  async getAll(): Promise<Driver[]> {
+    return this.driverRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} driver`;
+  async getOne(id: string): Promise<Driver> {
+    const driver = await this.driverRepository.findOneBy({ id });
+    if (!driver) {
+      throw new BadRequestException(`Driver with given id: ${id} not found!`);
+    }
+    return driver;
   }
 
-  update(id: number, updateDriverDto: UpdateDriverDto) {
-    return `This action updates a #${id} driver`;
+  async update(id: string, updateDriverDto: UpdateDriverDto) {
+    await this.getOne(id);
+    return this.driverRepository.update(id, updateDriverDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} driver`;
+  async delete(id: string) {
+    await this.getOne(id);
+    return this.driverRepository.delete(id);
   }
 }

@@ -27,22 +27,22 @@ export class DriverController {
   }
 
   @Get()
-  findAll() {
-    return this.driverService.findAll();
+  getAll() {
+    return this.driverService.getAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.driverService.findOne(+id);
+  getOne(@Param('id') id: string) {
+    return this.driverService.getOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateDriverDto: UpdateDriverDto) {
-    return this.driverService.update(+id, updateDriverDto);
+    return this.driverService.update(id, updateDriverDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.driverService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.driverService.delete(id);
   }
 }
