@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { Vehicle } from './entities/vehicle.entity';
+import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 
 @Injectable()
 export class VehicleService {
@@ -41,5 +42,13 @@ export class VehicleService {
   async getAll(): Promise<Vehicle[]> {
     const found = await this.vehicleRepository.find();
     return found;
+  }
+  async update(id: string, updateVehicleDto: UpdateVehicleDto) {
+    await this.getOne(id);
+    return this.vehicleRepository.update(id, updateVehicleDto);
+  }
+  async delete(id: string) {
+    await this.getOne(id);
+    return this.vehicleRepository.delete(id);
   }
 }
