@@ -6,11 +6,10 @@ import {
   Param,
   Patch,
   Post,
-  Put,
 } from '@nestjs/common';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
-import { VehicleService } from './vehicle.service';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
+import { VehicleService } from './vehicle.service';
 
 @Controller('vehicle')
 export class VehicleController {
