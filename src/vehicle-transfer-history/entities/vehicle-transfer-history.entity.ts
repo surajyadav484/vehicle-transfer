@@ -9,13 +9,13 @@ export class VehicleTransferHistory {
   @Column({ nullable: false })
   vehicleId: string;
 
-  @Column({ nullable: false })
+  @Column()
   transferredFromId: string;
 
   @Column({ nullable: false })
   transferredToId: string;
 
-  @Column({ nullable: false })
+  @Column()
   transferredFromType: string; //It can be driver or any other entity which vehicle can be transferred from.
 
   @Column({ nullable: false })
@@ -33,4 +33,6 @@ export class VehicleTransferHistory {
     onUpdate: 'CASCADE',
   })
   vehicle: Vehicle;
+
+  // Note: Not created relation for transferredFrom and transferredTo ids, because in future a vehicle can be transferred to other entities as well.
 }

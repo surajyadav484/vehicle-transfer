@@ -1,15 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { VehicleTransferHistoryService } from './vehicle-transfer-history.service';
-import { CreateVehicleTransferHistoryDto } from './dto/create-vehicle-transfer-history.dto';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import { CreateVehicleTransferHistoryInputDto } from './dto/create-vehicle-transfer-history-input.dto copy';
 import { UpdateVehicleTransferHistoryDto } from './dto/update-vehicle-transfer-history.dto';
+import { VehicleTransferHistoryService } from './vehicle-transfer-history.service';
 
 @Controller('vehicle-transfer-history')
 export class VehicleTransferHistoryController {
-  constructor(private readonly vehicleTransferHistoryService: VehicleTransferHistoryService) {}
+  constructor(
+    private readonly vehicleTransferHistoryService: VehicleTransferHistoryService,
+  ) {}
 
   @Post()
-  create(@Body() createVehicleTransferHistoryDto: CreateVehicleTransferHistoryDto) {
-    return this.vehicleTransferHistoryService.create(createVehicleTransferHistoryDto);
+  create(
+    @Body()
+    createVehicleTransferHistoryInputDto: CreateVehicleTransferHistoryInputDto,
+  ) {
+    return this.vehicleTransferHistoryService.create(
+      createVehicleTransferHistoryInputDto,
+    );
   }
 
   @Get()
@@ -23,8 +38,14 @@ export class VehicleTransferHistoryController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVehicleTransferHistoryDto: UpdateVehicleTransferHistoryDto) {
-    return this.vehicleTransferHistoryService.update(+id, updateVehicleTransferHistoryDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateVehicleTransferHistoryDto: UpdateVehicleTransferHistoryDto,
+  ) {
+    return this.vehicleTransferHistoryService.update(
+      +id,
+      updateVehicleTransferHistoryDto,
+    );
   }
 
   @Delete(':id')
